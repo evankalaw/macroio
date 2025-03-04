@@ -1,12 +1,10 @@
 "use client";
 
 import { useState } from "react";
+import type { Ingredient } from "~/app/types/ingredient";
+import IngredientsList from "./ingredientsList";
 
-type Ingredient = {
-  name: string;
-};
-
-export default function Ingredients() {
+export default function IngredientManager() {
   const [ingredients, setIngredients] = useState<Ingredient[]>([
     { name: "Chicken" },
     { name: "Rice" },
@@ -15,11 +13,7 @@ export default function Ingredients() {
 
   return (
     <div>
-      <ul>
-        {ingredients.map((ingredient) => (
-          <li key={ingredient.name}>{ingredient.name}</li>
-        ))}
-      </ul>
+      <IngredientsList ingredients={ingredients} />
     </div>
   );
 }
