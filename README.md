@@ -1,29 +1,17 @@
-# Create T3 App
+# macroio
 
-This is a [T3 Stack](https://create.t3.gg/) project bootstrapped with `create-t3-app`.
+A smart meal planning app that helps you make the most of what you have.
 
-## What's next? How do I make an app with this?
+## About
 
-We try to keep this project as simple as possible, so you can start with just the scaffolding we set up for you, and add additional things later when they become necessary.
+Macroio takes the guesswork out of meal planning by helping you track ingredients, fetch nutritional information, and create personalized meal plans based on what's in your kitchen.
 
-If you are not familiar with the different technologies used in this project, please refer to the respective docs. If you still are in the wind, please join our [Discord](https://t3.gg/discord) and ask for help.
+## Features
 
-- [Next.js](https://nextjs.org)
-- [NextAuth.js](https://next-auth.js.org)
-- [Prisma](https://prisma.io)
-- [Drizzle](https://orm.drizzle.team)
-- [Tailwind CSS](https://tailwindcss.com)
-- [tRPC](https://trpc.io)
+- **Ingredient Management**: Add, organize, and track the ingredients you have on hand
+- **Nutrition Tracking**: Automatically fetch detailed nutritional information for your ingredients
+- **Smart Meal Planning**: Generate customized meal plans based on your available ingredients
 
-## Learn More
+## Current Status
 
-To learn more about the [T3 Stack](https://create.t3.gg/), take a look at the following resources:
-
-- [Documentation](https://create.t3.gg/)
-- [Learn the T3 Stack](https://create.t3.gg/en/faq#what-learning-resources-are-currently-available) — Check out these awesome tutorials
-
-You can check out the [create-t3-app GitHub repository](https://github.com/t3-oss/create-t3-app) — your feedback and contributions are welcome!
-
-## How do I deploy this?
-
-Follow our deployment guides for [Vercel](https://create.t3.gg/en/deployment/vercel), [Netlify](https://create.t3.gg/en/deployment/netlify) and [Docker](https://create.t3.gg/en/deployment/docker) for more information.
+This project is currently in development. We're building the core functionality to manage ingredients and fetch nutritional data, with meal planning features coming soon.
