@@ -21,8 +21,8 @@ export default function IngredientManager() {
           setIngredients={setIngredients}
         />
       ) : (
-        <div className="mt-4 text-center text-sm italic text-white/70">
-          enter some ingredients to get started
+        <div className="mt-4 text-center text-sm lowercase italic text-white/70">
+          Enter some ingredients to get started
         </div>
       )}
     </div>
