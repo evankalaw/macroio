@@ -5,7 +5,7 @@ import type { Ingredient } from "~/app/types/ingredient";
 import IngredientsList from "./ingredientsList";
 import IngredientsInput from "./ingredientsInput";
 
-export default function IngredientManager() {
+export default function IngredientsManager() {
   const [ingredients, setIngredients] = useState<Ingredient[]>([]);
 
   return (

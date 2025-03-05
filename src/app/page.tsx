@@ -1,5 +1,5 @@
 import { HydrateClient } from "~/trpc/server";
-import IngredientManager from "./_components/ingredients/ingredientmanager";
+import IngredientsManager from "./_components/ingredients/ingredientsManager";
 
 export default async function Home() {
   return (
@@ -13,7 +13,7 @@ export default async function Home() {
             <h2 className="text-2xl font-bold">plan meals, not headaches</h2>
           </div>
 
-          <IngredientManager />
+          <IngredientsManager />
         </div>
       </main>
     </HydrateClient>
