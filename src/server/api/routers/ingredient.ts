@@ -37,4 +37,22 @@ export const ingredientRouter = createTRPCRouter({
 
       return newIngredient;
     }),
+
+  delete: publicProcedure
+    .input(z.object({ id: z.string() }))
+    .mutation(async ({ input }) => {
+      const db = await getDb();
+
+      const initialLength = db.data.ingredients.length;
+      db.data.ingredients = db.data.ingredients.filter(
+        (i) => i.id !== input.id,
+      );
+
+      if (initialLength !== db.data.ingredients.length) {
+        await db.write();
+        return { success: true };
+      }
+
+      return { success: false, message: "Ingredient not found" };
+    }),
 });
