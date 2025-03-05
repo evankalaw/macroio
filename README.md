@@ -6,6 +6,17 @@ A smart meal planning app that helps you make the most of what you have.
 
 Macroio takes the guesswork out of meal planning by helping you track ingredients, fetch nutritional information, and create personalized meal plans based on what's in your kitchen.
 
+Figuring out the best way in dev to get nutritional information -> right now looking at using https://platform.fatsecret.com
+
+### Why?
+
+The end loop in its most basic form IMO is the following:
+
+1. Add your ingredients
+2. We fetch nutrition information on the ingredients you have
+3. You provide some macronutrients, dietary restrictions, and preferences (to come later)
+4. We provide the above to help aid in recipe + meal plan generation.
+
 ## Features
 
 - **Ingredient Management**: Add, organize, and track the ingredients you have on hand
