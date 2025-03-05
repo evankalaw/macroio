@@ -6,9 +6,7 @@ import IngredientsList from "./ingredientsList";
 import IngredientsInput from "./ingredientsInput";
 
 export default function IngredientManager() {
-  const [ingredients, setIngredients] = useState<Ingredient[]>([
-    { name: "test" },
-  ]);
+  const [ingredients, setIngredients] = useState<Ingredient[]>([]);
 
   return (
     <div className="flex flex-col items-center justify-center space-y-4">
