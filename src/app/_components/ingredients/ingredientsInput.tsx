@@ -12,22 +12,31 @@ export default function IngredientsInput(props: IngredientsInputProps) {
     setInputText(e.target.value);
   };
 
-  const handleInputSubmit = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter") {
-      e.preventDefault();
+  const handleFormSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (inputText.trim()) {
       onSubmit(inputText);
       setInputText("");
     }
   };
 
   return (
-    <input
-      type="text"
-      className="text-black"
-      placeholder="greek yogurt"
-      onChange={handleInputChange}
-      onKeyDown={handleInputSubmit}
-      value={inputText}
-    />
+    <form onSubmit={handleFormSubmit} className="w-full max-w-md">
+      <div className="flex">
+        <input
+          type="text"
+          className="flex-1 rounded-l-lg border-0 px-4 py-2 text-black focus:outline-none focus:ring-2 focus:ring-orange-500"
+          placeholder="Add an ingredient (e.g., Greek yogurt)"
+          onChange={handleInputChange}
+          value={inputText}
+        />
+        <button
+          type="submit"
+          className="rounded-r-lg bg-white/20 px-4 py-2 font-medium text-white hover:bg-white/30 focus:outline-none focus:ring-2 focus:ring-orange-500"
+        >
+          Add
+        </button>
+      </div>
+    </form>
   );
 }
