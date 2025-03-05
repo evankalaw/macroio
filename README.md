@@ -2,6 +2,8 @@
 
 A smart meal planning app that helps you make the most of what you have.
 
+![Screen Shot 2025-03-05 at 4 33 20 PM](https://github.com/user-attachments/assets/c65dca3a-e981-45f6-887e-786a8e0e249a)
+
 ## About
 
 Macroio takes the guesswork out of meal planning by helping you track ingredients, fetch nutritional information, and create personalized meal plans based on what's in your kitchen.
@@ -26,5 +28,3 @@ The end loop in its most basic form IMO is the following:
 ## Current Status
 
 This project is currently in development. We're building the core functionality to manage ingredients and fetch nutritional data, with meal planning features coming soon.
-
-![Screen Shot 2025-03-05 at 4 33 20 PM](https://github.com/user-attachments/assets/c65dca3a-e981-45f6-887e-786a8e0e249a)
