@@ -12,7 +12,11 @@ export default function IngredientManager() {
 
   return (
     <div className="flex flex-col items-center justify-center space-y-4">
-      <IngredientsInput />
+      <IngredientsInput
+        onSubmit={(ingredient) => {
+          setIngredients([...ingredients, { name: ingredient }]);
+        }}
+      />
       {ingredients.length ? (
         <IngredientsList
           ingredients={ingredients}

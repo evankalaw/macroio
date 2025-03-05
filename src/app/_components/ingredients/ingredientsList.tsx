@@ -12,9 +12,9 @@ export default function IngredientsList(props: IngredientsListProps) {
       <ul>
         {ingredients.map((ingredient) => (
           <li key={ingredient.name}>
-            <div className="flex items-center justify-center gap-2">
-              <div className="flex-1">{ingredient.name}</div>
-              <div className="flex-1">
+            <div className="flex items-center justify-center">
+              <div className="flex-3">{ingredient.name}</div>
+              <div className="flex-3">
                 <button
                   className="rounded-md bg-white/10 px-2 py-1 text-sm text-white/70 hover:bg-white/20"
                   onClick={() =>

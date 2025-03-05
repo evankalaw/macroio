@@ -1,7 +1,12 @@
 import { useState } from "react";
 
-export default function IngredientsInput() {
+interface IngredientsInputProps {
+  onSubmit: (ingredient: string) => void;
+}
+
+export default function IngredientsInput(props: IngredientsInputProps) {
   const [inputText, setInputText] = useState<string>("");
+  const { onSubmit } = props;
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputText(e.target.value);
@@ -9,7 +14,9 @@ export default function IngredientsInput() {
 
   const handleInputSubmit = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
-      console.log(inputText);
+      e.preventDefault();
+      onSubmit(inputText);
+      setInputText("");
     }
   };
 
@@ -20,6 +27,7 @@ export default function IngredientsInput() {
       placeholder="greek yogurt"
       onChange={handleInputChange}
       onKeyDown={handleInputSubmit}
+      value={inputText}
     />
   );
 }
