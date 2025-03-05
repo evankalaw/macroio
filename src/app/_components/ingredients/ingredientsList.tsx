@@ -4,10 +4,9 @@ interface IngredientsListProps {
   setIngredients: (ingredients: Ingredient[]) => void;
 }
 
-export default function IngredientsList({
-  ingredients,
-  setIngredients,
-}: IngredientsListProps) {
+export default function IngredientsList(props: IngredientsListProps) {
+  const { ingredients, setIngredients } = props;
+
   return (
     <div className="flex flex-col items-center justify-center">
       <ul>
