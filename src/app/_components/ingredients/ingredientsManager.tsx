@@ -7,6 +7,7 @@ import IngredientsList from "./ingredientsList";
 import { type Ingredient } from "~/server/db";
 import { type GeneratedRecipe } from "~/server/services/openai";
 import { useState } from "react";
+import RecipeList from "../recipes/recipeList";
 
 export default function IngredientsManager() {
   const [recipes, setRecipes] = useState<GeneratedRecipe[]>([]);
@@ -96,20 +97,7 @@ export default function IngredientsManager() {
               Generate Recipes
             </button>
             {isGeneratingRecipes && <div>Generating Recipes</div>}
-            {recipes && recipes.length > 0 && (
-              <ul>
-                {recipes.map((recipe) => {
-                  return (
-                    <li key={recipe.name}>
-                      <div>{recipe.name}</div>
-                      <div>{recipe.ingredients}</div>
-                      <div>{recipe.instructions}</div>
-                      <div>{recipe.nutritionalInfo.calories}</div>
-                    </li>
-                  );
-                })}
-              </ul>
-            )}
+            {recipes && recipes.length > 0 && <RecipeList recipes={recipes} />}
             {recipes.length === 0 &&
               ingredients.length > 0 &&
               !isGeneratingRecipes && (
