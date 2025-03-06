@@ -4,6 +4,7 @@ import { api } from "~/trpc/react";
 import IngredientsInputWithApiAccess from "./ingredientsInputWithApiAccess";
 import { type NutritionData } from "~/server/services/fatsecret";
 import IngredientsList from "./ingredientsList";
+import { type Ingredient } from "~/server/db";
 
 export default function IngredientsManager() {
   const { data: ingredients, isLoading } = api.ingredient.getAll.useQuery();
@@ -21,6 +22,21 @@ export default function IngredientsManager() {
       await utils.ingredient.getAll.invalidate();
     },
   });
+
+  const generateRecipes = api.openAi.getRecipes.useMutation();
+
+  const handleGenerateRecipe = async (ingredients: Ingredient[]) => {
+    if (ingredients && ingredients.length > 0) {
+      try {
+        const result = await generateRecipes.mutateAsync({
+          ingredients: ingredients,
+        });
+        console.log("Generated recipe:", result);
+      } catch (error) {
+        console.error("Error talking to OpenAI", error);
+      }
+    }
+  };
 
   const handleAddIngredient = async (ingredient: NutritionData) => {
     if (ingredient.foodName.trim()) {
@@ -68,6 +84,12 @@ export default function IngredientsManager() {
               ingredients={ingredients}
               handleDeleteIngredient={handleDeleteIngredient}
             />
+            <button
+              onClick={() => handleGenerateRecipe(ingredients)}
+              className="w-full rounded bg-orange-500 px-4 py-2 font-semibold text-white transition-colors hover:bg-orange-600"
+            >
+              Generate Recipe
+            </button>
           </div>
         </div>
       ) : (
