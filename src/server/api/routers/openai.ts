@@ -22,6 +22,7 @@ export const openAiRouter = createTRPCRouter({
   getRecipes: publicProcedure
     .input(z.object({ ingredients: z.array(IngredientSchema) }))
     .mutation(async ({ input }) => {
-      return openAiService.getRecipe(input.ingredients);
+      const response = await openAiService.getRecipes(input.ingredients);
+      return response?.recipes ?? [];
     }),
 });

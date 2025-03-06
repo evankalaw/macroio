@@ -5,8 +5,12 @@ import IngredientsInputWithApiAccess from "./ingredientsInputWithApiAccess";
 import { type NutritionData } from "~/server/services/fatsecret";
 import IngredientsList from "./ingredientsList";
 import { type Ingredient } from "~/server/db";
+import { type GeneratedRecipe } from "~/server/services/openai";
+import { useState } from "react";
 
 export default function IngredientsManager() {
+  const [recipes, setRecipes] = useState<GeneratedRecipe[]>([]);
+
   const { data: ingredients, isLoading } = api.ingredient.getAll.useQuery();
 
   const utils = api.useUtils();
@@ -24,14 +28,15 @@ export default function IngredientsManager() {
   });
 
   const generateRecipes = api.openAi.getRecipes.useMutation();
+  const isGeneratingRecipes = generateRecipes.isPending;
 
   const handleGenerateRecipe = async (ingredients: Ingredient[]) => {
     if (ingredients && ingredients.length > 0) {
       try {
         const result = await generateRecipes.mutateAsync({
-          ingredients: ingredients,
+          ingredients,
         });
-        console.log("Generated recipe:", result);
+        setRecipes(result);
       } catch (error) {
         console.error("Error talking to OpenAI", error);
       }
@@ -90,6 +95,28 @@ export default function IngredientsManager() {
             >
               Generate Recipe
             </button>
+            {isGeneratingRecipes && <div>Generating Recipes</div>}
+            {recipes && recipes.length > 0 && (
+              <ul>
+                {recipes.map((recipe) => {
+                  return (
+                    <li key={recipe.name}>
+                      <div>{recipe.name}</div>
+                      <div>{recipe.ingredients}</div>
+                      <div>{recipe.instructions}</div>
+                      <div>{recipe.nutritionalInfo.calories}</div>
+                    </li>
+                  );
+                })}
+              </ul>
+            )}
+            {recipes.length === 0 &&
+              ingredients.length > 0 &&
+              !isGeneratingRecipes && (
+                <div>
+                  You have some ingredients, try generating some recipes!
+                </div>
+              )}
           </div>
         </div>
       ) : (
