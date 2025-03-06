@@ -1,35 +1,36 @@
-import type { Ingredient } from "~/app/types/ingredient";
+import { type Ingredient } from "~/server/db";
+
 interface IngredientsListProps {
   ingredients: Ingredient[];
-  setIngredients: (ingredients: Ingredient[]) => void;
+  handleDeleteIngredient: (id: string) => void;
 }
 
 export default function IngredientsList(props: IngredientsListProps) {
-  const { ingredients, setIngredients } = props;
+  const { ingredients, handleDeleteIngredient } = props;
 
   return (
-    <div className="flex flex-col items-center justify-center">
-      <ul>
-        {ingredients.map((ingredient) => (
-          <li key={ingredient.name}>
-            <div className="flex items-center justify-center">
-              <div className="flex-3">{ingredient.name}</div>
-              <div className="flex-3">
-                <button
-                  className="rounded-md bg-white/10 px-2 py-1 text-sm text-white/70 hover:bg-white/20"
-                  onClick={() =>
-                    setIngredients(
-                      ingredients.filter((i) => i.name !== ingredient.name),
-                    )
-                  }
-                >
-                  x
-                </button>
-              </div>
-            </div>
-          </li>
-        ))}
-      </ul>
-    </div>
+    <ul className="space-y-2">
+      {ingredients.map((ingredient) => (
+        <li
+          key={ingredient.id}
+          className="flex items-center justify-between rounded-lg bg-white/10 p-3"
+        >
+          <div className="flex-1">
+            <p className="font-medium">{ingredient.name}</p>
+            {ingredient.calories && (
+              <p className="text-sm text-white/70">
+                {ingredient.calories} calories
+              </p>
+            )}
+          </div>
+          <button
+            className="ml-2 rounded-md bg-white/10 px-2 py-1 text-sm text-white/70 hover:bg-white/20"
+            onClick={() => handleDeleteIngredient(ingredient.id)}
+          >
+            Remove
+          </button>
+        </li>
+      ))}
+    </ul>
   );
 }

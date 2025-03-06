@@ -1,5 +1,6 @@
 import { createCallerFactory, createTRPCRouter } from "~/server/api/trpc";
 import { ingredientRouter } from "./routers/ingredient";
+import { nutritionRouter } from "./routers/nutrition";
 
 /**
  * This is the primary router for your server.
@@ -8,6 +9,7 @@ import { ingredientRouter } from "./routers/ingredient";
  */
 export const appRouter = createTRPCRouter({
   ingredient: ingredientRouter,
+  nutrition: nutritionRouter,
 });
 
 // export type definition of API
