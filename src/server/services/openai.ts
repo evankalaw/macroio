@@ -1,6 +1,6 @@
 import OpenAI, { OpenAIError } from "openai";
 import { env } from "~/env";
-import { Ingredient } from "../db";
+import { type Ingredient } from "../db";
 
 export interface RecipeNutritionalInfo {
   calories: number;
