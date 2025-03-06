@@ -2,8 +2,7 @@
 
 A smart meal planning app that helps you make the most of what you have.
 
-![Screen Shot 2025-03-05 at 7 26 24 PM](https://github.com/user-attachments/assets/d7513d4d-769d-4356-b3a4-2c4d22d325b0)
-
+![Screen Shot 2025-03-05 at 11 59 25 PM](https://github.com/user-attachments/assets/dd464942-2eb3-487d-9804-fbb17f8ddd0f)
 
 ## About
 
