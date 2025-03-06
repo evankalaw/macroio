@@ -17,6 +17,11 @@ export default function IngredientsList(props: IngredientsListProps) {
         >
           <div className="flex-1">
             <p className="font-medium">{ingredient.name}</p>
+            {ingredient.brandName && (
+              <p className="text-sm italic text-white/50">
+                by {ingredient.brandName}
+              </p>
+            )}
             {ingredient.calories &&
               ingredient.servingSize &&
               ingredient.servingUnit && (

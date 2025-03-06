@@ -13,6 +13,7 @@ export const ingredientRouter = createTRPCRouter({
     .input(
       z.object({
         name: z.string().min(1),
+        brandName: z.string().optional(),
         calories: z.number().optional(),
         protein: z.number().optional(),
         fat: z.number().optional(),
@@ -27,6 +28,7 @@ export const ingredientRouter = createTRPCRouter({
       const newIngredient: Ingredient = {
         id: generateId(),
         name: input.name,
+        brandName: input.brandName,
         calories: input.calories,
         protein: input.protein,
         fat: input.fat,

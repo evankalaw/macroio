@@ -7,6 +7,7 @@ import { v4 as uuidv4 } from "uuid";
 export type Ingredient = {
   id: string;
   name: string;
+  brandName?: string;
   calories?: number;
   protein?: number;
   fat?: number;

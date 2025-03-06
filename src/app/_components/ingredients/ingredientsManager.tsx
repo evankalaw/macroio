@@ -33,6 +33,7 @@ export default function IngredientsManager() {
         if (details) {
           createIngredient.mutate({
             name: details.foodName,
+            brandName: details.brandName,
             calories: details.calories,
             protein: details.protein,
             fat: details.fat,
