@@ -20,14 +20,14 @@ export class OpenAiService {
 
     try {
       const result = await this.openAiClient.chat.completions.create({
-        model: "gpt-4",
+        model: "gpt-4o",
         messages: [
           {
             role: "system",
             content:
-              "you're a a chef with a sense of humor, say something to brighten your customer's day",
+              'You are a nutritionally minded chef, creating meals for a client. Based on their available ingredients and any nutritional requirements, generate up to 3 recipe suggestions. Always respond with a valid JSON object with the following structure: {"recipes":[{"name":"Recipe Name","ingredients":["ingredient1","ingredient2"],"instructions":"Step-by-step cooking instructions","nutritionalInfo":{"calories":0,"protein":0,"fat":0,"carbs":0}}]}',
           },
-          { role: "user", content: "yo chef what up dog" },
+          { role: "user", content: `Please create recipes using these ingredients: ${ingredients.join(', ')} },
         ],
       });
 
