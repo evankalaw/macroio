@@ -113,8 +113,8 @@ export class FatSecretService {
   private tokenExpiry: Date | null = null;
 
   constructor() {
-    this.clientId = process.env.NEXT_PUBLIC_FATSECRET_CLIENT_ID;
-    this.clientSecret = process.env.NEXT_PUBLIC_FATSECRET_CLIENT_SECRET;
+    this.clientId = process.env.FATSECRET_CLIENT_ID;
+    this.clientSecret = process.env.FATSECRET_CLIENT_SECRET;
 
     if (!this.clientId || !this.clientSecret) {
       console.warn("FatSecret API credentials not configured properly.");
