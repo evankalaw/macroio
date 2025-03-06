@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/prefer-optional-chain */
 /**
  * FatSecret API integration service
  * Handles authentication and API requests to the FatSecret Platform API
@@ -74,19 +75,30 @@ export interface FoodDetailsResponse {
   };
 }
 
-// Simplified nutrition data for the app
+// Update the NutritionData interface to better handle serving information
 export interface NutritionData {
   foodId: string;
   foodName: string;
   brandName?: string;
+  // Nutrition values per serving
   calories?: number;
   protein?: number;
   carbs?: number;
   fat?: number;
   fiber?: number;
   sugar?: number;
-  servingSize?: string;
+  // Serving information
+  servingSize?: number; // Changed to number for calculations
   servingUnit?: string;
+  servingDescription?: string;
+  // Additional serving metadata
+  defaultServingSize?: number;
+  defaultServingUnit?: string;
+  availableServings?: Array<{
+    size: number;
+    unit: string;
+    description: string;
+  }>;
 }
 
 interface TokenResponse {
@@ -169,7 +181,6 @@ export class FatSecretService {
   async searchFoods(query: string, maxResults = 10): Promise<NutritionData[]> {
     try {
       const token = await this.getAccessToken();
-
       const params = new URLSearchParams({
         method: "foods.search",
         search_expression: query,
@@ -193,22 +204,29 @@ export class FatSecretService {
 
       const data = (await response.json()) as FoodSearchResponse;
 
-      // Check for API error
+      // Debug raw API response
+      console.log("Food Search Raw Response:", JSON.stringify(data, null, 2));
+
       if (data.error) {
         throw new Error(`FatSecret API error: ${data.error.message}`);
       }
 
-      // eslint-disable-next-line @typescript-eslint/prefer-optional-chain
       if (!data.foods || !data.foods.food) {
         return [];
       }
 
-      // Handle both array and single item responses
       const foods = Array.isArray(data.foods.food)
         ? data.foods.food
         : [data.foods.food];
 
-      // Map API response to our simplified nutrition data format
+      // Debug first food item's description format
+      if (foods[0]?.food_description) {
+        console.log(
+          "First Food Description Format:",
+          foods[0].food_description,
+        );
+      }
+
       return foods.map((food) => this.mapSearchResultToNutritionData(food));
     } catch (error) {
       console.error("Error searching foods:", error);
@@ -222,7 +240,6 @@ export class FatSecretService {
   async getFoodDetails(foodId: string): Promise<NutritionData | null> {
     try {
       const token = await this.getAccessToken();
-
       const params = new URLSearchParams({
         method: "food.get",
         food_id: foodId,
@@ -245,14 +262,32 @@ export class FatSecretService {
 
       const data = (await response.json()) as FoodDetailsResponse;
 
-      // Check for API error
+      // Debug raw API response
+      console.log("Food Details Raw Response:", JSON.stringify(data, null, 2));
+
       if (data.error) {
         throw new Error(`FatSecret API error: ${data.error.message}`);
       }
 
-      // Check if food exists in the response
       if (!data.food) {
         return null;
+      }
+
+      // Debug serving information
+      if (data.food.servings?.serving) {
+        const servings = Array.isArray(data.food.servings.serving)
+          ? data.food.servings.serving
+          : [data.food.servings.serving];
+
+        console.log(
+          "Available Serving Sizes:",
+          servings.map((s) => ({
+            description: s.serving_description,
+            amount: s.metric_serving_amount,
+            unit: s.metric_serving_unit,
+            calories: s.calories,
+          })),
+        );
       }
 
       return this.mapFoodDetailsToNutritionData(data.food);
@@ -278,7 +313,7 @@ export class FatSecretService {
 
       parts.forEach((part) => {
         const trimmed = part.trim();
-        if (trimmed.startsWith("Cal:")) {
+        if (trimmed.startsWith("Calories:")) {
           const parsed = parseFloat(trimmed.replace("Cal:", "").trim());
           calories = !isNaN(parsed) ? parsed : undefined;
         } else if (trimmed.startsWith("Fat:")) {
@@ -291,7 +326,7 @@ export class FatSecretService {
             trimmed.replace("Carbs:", "").replace("g", "").trim(),
           );
           carbs = !isNaN(parsed) ? parsed : undefined;
-        } else if (trimmed.startsWith("Prot:")) {
+        } else if (trimmed.startsWith("Protein:")) {
           const parsed = parseFloat(
             trimmed.replace("Prot:", "").replace("g", "").trim(),
           );
@@ -321,22 +356,66 @@ export class FatSecretService {
       throw new Error("Invalid food data");
     }
 
-    // Get the first serving (usually the default one)
     const servings = food.servings.serving;
-    const serving = Array.isArray(servings) ? servings[0] : servings;
+    const allServings = Array.isArray(servings) ? servings : [servings];
+
+    // Find the default serving (usually the first one or "1 serving" if available)
+    const defaultServing =
+      allServings.find(
+        (s) => s.serving_description.toLowerCase().includes("1 serving"),
+        // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
+      ) || allServings[0];
+
+    // Map all available servings
+    const availableServings = allServings.map((s) => ({
+      size: parseFloat(s.metric_serving_amount ?? "0"),
+      unit: s.metric_serving_unit ?? "g",
+      description: s.serving_description,
+    }));
+
+    // Only log if defaultServing exists and has required properties
+    if (defaultServing) {
+      console.log("Serving Details:", {
+        defaultServing: {
+          description: defaultServing.serving_description,
+          amount: defaultServing.metric_serving_amount,
+          unit: defaultServing.metric_serving_unit,
+        },
+        allServings: availableServings,
+        nutritionFor: "Using default serving size",
+      });
+    }
 
     return {
       foodId: food.food_id,
       foodName: food.food_name,
       brandName: food.brand_name,
-      calories: serving ? parseFloat(serving.calories) : undefined,
-      protein: serving ? parseFloat(serving.protein) : undefined,
-      carbs: serving ? parseFloat(serving.carbohydrate) : undefined,
-      fat: serving ? parseFloat(serving.fat) : undefined,
-      fiber: serving?.fiber ? parseFloat(serving.fiber) : undefined,
-      sugar: serving?.sugar ? parseFloat(serving.sugar) : undefined,
-      servingSize: serving?.metric_serving_amount,
-      servingUnit: serving?.metric_serving_unit,
+      calories: defaultServing
+        ? parseFloat(defaultServing.calories)
+        : undefined,
+      protein: defaultServing ? parseFloat(defaultServing.protein) : undefined,
+      carbs: defaultServing
+        ? parseFloat(defaultServing.carbohydrate)
+        : undefined,
+      fat: defaultServing ? parseFloat(defaultServing.fat) : undefined,
+      fiber: defaultServing?.fiber
+        ? parseFloat(defaultServing.fiber)
+        : undefined,
+      sugar: defaultServing?.sugar
+        ? parseFloat(defaultServing.sugar)
+        : undefined,
+      // Serving information
+      servingSize: defaultServing?.metric_serving_amount
+        ? parseFloat(defaultServing.metric_serving_amount)
+        : undefined,
+      servingUnit: defaultServing?.metric_serving_unit,
+      servingDescription: defaultServing?.serving_description,
+      // Additional serving metadata
+      defaultServingSize: defaultServing?.metric_serving_amount
+        ? parseFloat(defaultServing.metric_serving_amount)
+        : undefined,
+      defaultServingUnit: defaultServing?.metric_serving_unit,
+      availableServings,
     };
   }
 }

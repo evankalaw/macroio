@@ -11,6 +11,8 @@ export type Ingredient = {
   protein?: number;
   fat?: number;
   carbs?: number;
+  servingSize?: number;
+  servingUnit?: string;
   createdAt: string;
 };
 

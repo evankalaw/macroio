@@ -22,15 +22,28 @@ export default function IngredientsManager() {
     },
   });
 
-  const handleAddIngredient = (ingredient: NutritionData) => {
+  const handleAddIngredient = async (ingredient: NutritionData) => {
     if (ingredient.foodName.trim()) {
-      createIngredient.mutate({
-        name: ingredient.foodName,
-        calories: ingredient.calories,
-        protein: ingredient.protein,
-        fat: ingredient.fat,
-        carbs: ingredient.carbs,
-      });
+      try {
+        // Create a new query instance with the correct food ID
+        const details = await utils.nutrition.getFoodDetails.fetch({
+          foodId: ingredient.foodId,
+        });
+
+        if (details) {
+          createIngredient.mutate({
+            name: details.foodName,
+            calories: details.calories,
+            protein: details.protein,
+            fat: details.fat,
+            carbs: details.carbs,
+            servingSize: details.servingSize,
+            servingUnit: details.servingUnit,
+          });
+        }
+      } catch (error) {
+        console.error("Error fetching food details:", error);
+      }
     }
   };
 

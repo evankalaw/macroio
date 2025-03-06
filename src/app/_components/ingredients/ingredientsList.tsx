@@ -19,7 +19,8 @@ export default function IngredientsList(props: IngredientsListProps) {
             <p className="font-medium">{ingredient.name}</p>
             {ingredient.calories && (
               <p className="text-sm text-white/70">
-                {ingredient.calories} calories
+                {ingredient.calories} calories for {ingredient.servingSize}{" "}
+                {ingredient.servingUnit}
               </p>
             )}
           </div>

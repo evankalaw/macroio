@@ -17,6 +17,8 @@ export const ingredientRouter = createTRPCRouter({
         protein: z.number().optional(),
         fat: z.number().optional(),
         carbs: z.number().optional(),
+        servingSize: z.number().optional(),
+        servingUnit: z.string().optional(),
       }),
     )
     .mutation(async ({ input }) => {
@@ -29,6 +31,8 @@ export const ingredientRouter = createTRPCRouter({
         protein: input.protein,
         fat: input.fat,
         carbs: input.carbs,
+        servingSize: input.servingSize,
+        servingUnit: input.servingUnit,
         createdAt: new Date().toISOString(),
       };
 
